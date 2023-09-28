@@ -1,0 +1,27 @@
+const express = require('express');
+const app = express();
+const error = require('./routes/error');
+const main = require("./routes/main");
+const cors = require("cors");
+
+// body parsing
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use("/uploads", express.static(__dirname + "/uploads"));
+
+// cors setting
+// console.log("CORS:", process.env.CLIENT_URL.split(' '))
+// app.use(cors({
+// origin: process.env.CLIENT_URL.split(' '),
+// optionsSuccessStatus: 200,
+// }));
+app.use(cors());
+
+// routing
+app.use(main);
+app.use(error);
+
+// bot
+require("./bot/bot");
+
+module.exports = app;
