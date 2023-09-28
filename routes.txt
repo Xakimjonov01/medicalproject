@@ -1,0 +1,62 @@
+=========================== OPEN routes =============================
+auth
+    post: /auth/login            {username, password}
+    post: /auth/register
+
+doctor
+    post: /auth/login           {username, password, role: "doctor"}
+    get: /doctor
+
+hospitals
+    get: /hospitals
+
+services
+    get: /services           (get all)
+    get: /services/filter            (get by filter queries: "hospital" this is ObjectId)
+
+doctors
+    get: /doctors           (get all)
+    get: /doctors/:doctorId      (get doctor by id);
+    get: /doctors/filter?hospital=hospitalId&service=serviceId&search=ism,familiya,tel
+
+======================== User account  ===============================
+home:
+    get: /           (this router for check the user is authorized?)
+
+profile
+    get: /profile
+    post: /profile/update
+
+queue
+    get queues: /queue/    (userning barcha navbatlarini chiqarib beradi!);
+    post: /queue/:doctorId/add        (doktorni bugungi kunidan navbat oladi! post: {applicationText: "kasalligi haqida malumot"}) 
+    delete: /queue/cancel/:queueId        (navbatni bekor qiladi, bazadan ochiradi.) 
+
+======================== Doctor account  ===============================
+Doctor
+    get: /doctor    (to get doctor home page for testing authorized)
+    get: /doctor/customers     (to get today customers)
+    get: /doctor/customers/:customerId     (doktorning qaysidur mijozining navbatlarini oberadi + oldingi kunlarniham)
+    post: /doctor/customers/:queueId/start    (doktorning qaysidur mijozining navbatini boshlaydi)
+    post: /doctor/customers/:queueId/complete    (doktorning qaysidur mijozining navbatini bajarilgan holatiga otkazadi... body:{ diagnosis: "TEXT sTING"})  
+    post: /doctor/customers/:queueId/cancel    (doktorning qaysidur mijozining navbatini bekor qiladi)  
+
+========================= Admin =======================================
+admin
+    hospitals
+        get: /admin/hospital
+        post: /admin/hospital/add
+        post: /admin/hospital/update/:id
+        delete: /admin/hospital/delete/:id
+    services
+        get: /admin/service
+        post: /admin/service/add
+        post: /admin/service/update/:id
+        delete: /admin/service/delete/:id
+    doctors
+        get: /admin/doctor      (get all doctors "service, hospital" available)
+        get: /admin/doctor/invalids     (get "service, hospital" fields are unavailable doctors)
+        get: /admin/doctor/:id     (get one doctor)
+        post: /admin/doctor/add     (add one doctor)
+        post: /admin/doctor/update/:id     (update one doctor)
+        delete: /admin/doctor/delete/:id     (delete one doctor)
